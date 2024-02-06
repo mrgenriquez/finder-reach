@@ -1,0 +1,9 @@
+# Ignorar la carpeta node_modules en el nivel api
+api/node_modules/
+
+# Si también tienes una carpeta node_modules en la raíz, agrégala
+node_modules/
+mysql-data/
+
+# Otros archivos y carpetas que también podrías querer ignorar
+.DS_Store

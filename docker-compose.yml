@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  node-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3500:3500"
+    depends_on:
+      - database
+    environment:
+      - DATABASE_HOST=database
+      - DATABASE_PORT=3306
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=root
+      - DATABASE_NAME=mydatabase
+  database:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydatabase
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  angular-app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+
+  nginx:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "4300:4200" 
+    depends_on:
+      - angular-app
