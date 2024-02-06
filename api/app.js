@@ -16,7 +16,7 @@ require('dotenv').config();
 const oauth2Client = new google.auth.OAuth2(process.env.G_ID, process.env.G_SECRET, process.env.G_API);
 oauth2Client.setCredentials({ refresh_token: process.env.G_TOKEN });
 const connection = mysql.createConnection({
-  host: process.env.DATABASE_HOST || 'database',
+  host: localhost,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
@@ -34,7 +34,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
+connection.connect((err) => {
+  if(err){
+      console.error('Error al conectar a MySQL:', err);
+      return;
+  }
+  console.log('Conexión a MySQL establecida');
+});
 
 
 app.use(bodyParser.json());
